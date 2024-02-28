@@ -363,3 +363,38 @@ cat << 'EOF' > $JUPYTER_CONFIG_ROOT/apputils-extension/notification.jupyterlab-s
     "fetchNews": "false"
 }
 EOF
+
+
+cat > $JUPYTER_CONFIG_ROOT/themes.jupyterlab-settings <<EoL
+{
+    // Theme
+    // @jupyterlab/apputils-extension:themes
+    // Theme manager settings.
+    // *************************************
+
+    // Selected Theme
+    // Application-level visual styling theme
+    "theme": "JupyterLab Dark"
+
+    // Theme CSS Overrides
+    // Override theme CSS variables by setting key-value pairs here
+    //"overrides": {
+    //    "code-font-size": "11px",
+    //    "content-font-size1": "13px"
+    //}
+}
+EoL
+
+################################################################################
+# STEP-03: Extensions
+################################################################################
+# echo "Install Extensions ... "
+# source /home/ec2-user/anaconda3/bin/activate JupyterSystemEnv
+
+# pip install ipywidgets
+# jupyter nbextension enable widgetsnbextension --py --sys-prefix
+
+# pip install amazon-codewhisperer-jupyterlab-ext
+# jupyter server extension enable amazon_codewhisperer_jupyterlab_ext
+
+# source /home/ec2-user/anaconda3/bin/deactivate
