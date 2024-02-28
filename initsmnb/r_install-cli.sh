@@ -56,7 +56,10 @@ rm -fr /tmp/aws/
 # rm -f /home/ec2-user/anaconda3/envs/JupyterSystemEnv/bin/aws
 # sudo mv ~/anaconda3/bin/aws ~/anaconda3/bin/aws1
 # ls -l /usr/local/bin/aws
-# source ~/.bashrc
+source ~/.bashrc
+aws configure set default.region ${AWS_REGION}
+aws configure get default.region
+aws configure set region $AWS_REGION
 aws --version
 
 # Borrow these settings from aws-samples hpc repo
