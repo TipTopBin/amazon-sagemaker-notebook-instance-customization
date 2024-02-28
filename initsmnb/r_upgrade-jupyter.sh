@@ -365,7 +365,7 @@ cat << 'EOF' > $JUPYTER_CONFIG_ROOT/apputils-extension/notification.jupyterlab-s
 EOF
 
 
-cat > $JUPYTER_CONFIG_ROOT/themes.jupyterlab-settings <<EoL
+cat > $JUPYTER_CONFIG_ROOT/apputils-extension/themes.jupyterlab-settings <<EoL
 {
     // Theme
     // @jupyterlab/apputils-extension:themes
