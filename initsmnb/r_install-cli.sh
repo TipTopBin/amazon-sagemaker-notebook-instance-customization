@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+source ~/.bashrc
+
 FLAVOR=$(grep PRETTY_NAME /etc/os-release | cut -d'"' -f 2)
 grep '^max_connections=' /etc/yum.conf &> /dev/null || echo "max_connections=10" | sudo tee -a /etc/yum.conf
 

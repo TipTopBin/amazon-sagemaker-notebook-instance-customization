@@ -88,7 +88,7 @@ echo "##########################################################################
     run_and_track_stat ${BIN_DIR}/r_install-cli.sh
     run_and_track_stat ${BIN_DIR}/r_duf.sh
     run_and_track_stat ${BIN_DIR}/r_s5cmd.sh
-) &> ${BIN_DIR}/../INITSMNB-install-cli.log &
+) &> ${BIN_DIR}/../INITSMNB-install-cli.txt &
 
 # These require jupyter lab restarted and browser reloaded, to see the changes.
 ${BIN_DIR}/r_patch-jupyter-config.sh
@@ -145,7 +145,7 @@ $(jobs)
 They may take ${COLOR_RED}~4 minutes${COLOR_OFF} (on ml.t3.medium in ap-southeast-1 / Singapore).
 
 Job logs:
-$(ls -al ~/INITSMNB-*.txt)
+$(ls -al ${BIN_DIR}/../INITSMNB-*.txt)
 "
 wait
 
