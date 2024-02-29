@@ -20,9 +20,9 @@ sudo yum groupinstall "Development Tools" -y
 sudo yum -y install jq gettext bash-completion moreutils openssl zsh xsel xclip amazon-efs-utils nc telnet mtr traceroute netcat 
 # sudo yum -y install siege fio ioping dos2unix
 
-if [ ! -f $WORKING_DIR/bin/yq ]; then
-  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O $WORKING_DIR/bin/yq
-  chmod +x $WORKING_DIR/bin/yq
+if [ ! -f $CUSTOM_DIR/bin/yq ]; then
+  wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O $CUSTOM_DIR/bin/yq
+  chmod +x $CUSTOM_DIR/bin/yq
 fi
 
 # This nbdime is broken. It crashes with ModuleNotFoundError: jsonschema.protocols.
@@ -68,3 +68,33 @@ aws configure set default.s3.max_queue_size 10000
 aws configure set default.s3.multipart_threshold 64MB
 aws configure set default.s3.multipart_chunksize 16MB
 aws configure set default.cli_auto_prompt on-partial
+
+
+echo "==============================================="
+echo "  More tools ......"
+echo "==============================================="
+#https://github.com/lutzroeder/netron
+pip install netron
+# pip install cleanipynb # cleanipynb xxx.ipynb # 注意会把所有的图片附件都清掉
+netron --version
+# netron [FILE] or netron.start('[FILE]').
+python3 -m pip install awscurl
+pip3 install httpie
+
+
+# Install session-manager
+if [ ! -f $CUSTOM_DIR/bin/session-manager-plugin.rpm ]; then
+  curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm" -o "$WORKING_DIR/bin/session-manager-plugin.rpm"
+fi
+sudo yum install -y $CUSTOM_DIR/bin/session-manager-plugin.rpm
+session-manager-plugin
+
+# ec2-instance-selector
+if [ ! -f $CUSTOM_DIR/bin/ec2-instance-selector ]; then
+  target=$(uname | tr '[:upper:]' '[:lower:]')-amd64
+  LATEST_DOWNLOAD_URL=$(curl --silent $CUSTOM_DIR/bin/ec2-instance-selector "https://api.github.com/repos/aws/amazon-ec2-instance-selector/releases/latest" | grep "\"browser_download_url\": \"https.*$target.tar.gz" | sed -E 's/.*"([^"]+)".*/\1/')
+  curl -Lo $CUSTOM_DIR/bin/ec2-instance-selector.tar.gz $LATEST_DOWNLOAD_URL
+  tar -xvf $CUSTOM_DIR/bin/ec2-instance-selector.tar.gz -C $CUSTOM_DIR/bin
+  # curl -Lo $CUSTOM_DIR/bin/ec2-instance-selector https://github.com/aws/amazon-ec2-instance-selector/releases/download/v2.4.1/ec2-instance-selector-`uname | tr '[:upper:]' '[:lower:]'`-amd64 
+  chmod +x $CUSTOM_DIR/bin/ec2-instance-selector
+fi

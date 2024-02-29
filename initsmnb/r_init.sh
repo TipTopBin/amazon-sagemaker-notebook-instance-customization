@@ -41,8 +41,8 @@ CONFIG_DOCKER=1
 
 echo "BIN_DIR: "$BIN_DIR
 
-WORKING_DIR=/home/ec2-user/SageMaker/custom
-mkdir -p "$WORKING_DIR"/bin
+CUSTOM_DIR=/home/ec2-user/SageMaker/custom
+mkdir -p "$CUSTOM_DIR"/bin
 
 
 echo "==============================================="

@@ -11,3 +11,4 @@ fi
 sudo sed -i \
     's|^\[Service\]$|[Service]\nEnvironment="DOCKER_TMPDIR=/home/ec2-user/SageMaker/.initsmnb.d/tmp"|' \
     /usr/lib/systemd/system/docker.service
+

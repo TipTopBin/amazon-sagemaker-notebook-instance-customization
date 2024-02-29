@@ -14,3 +14,13 @@ with open('/etc/docker/daemon.json', 'w') as f:
     json.dump(d, f, indent=4)
     f.write('\n')
 "
+
+# echo "==============================================="
+# echo "  Optimize Disk Space ......"
+# echo "==============================================="
+# # https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers-troubleshooting.html
+# mkdir -p ~/.sagemaker
+# cat > ~/.sagemaker/config.yaml <<EOF
+# local:
+#   container_root: /home/ec2-user/SageMaker/tmp
+# EOF
