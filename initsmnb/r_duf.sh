@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+CUSTOM_DIR=/home/ec2-user/SageMaker/custom
+
 # Constants
 APP=duf
 GH=muesli/duf
@@ -19,7 +21,21 @@ latest_download_url() {
 }
 
 LATEST_DOWNLOAD_URL=$(latest_download_url)
-RPM=${LATEST_DOWNLOAD_URL##*/}
-(cd /tmp/ && curl -LO ${LATEST_DOWNLOAD_URL})
+# check LATEST_DOWNLOAD_URL empty (Github API rate limit exceeded)
+if [[ ! -z $LATEST_DOWNLOAD_URL ]]; then
+  echo "Setup duf latest"
+  RPM=${LATEST_DOWNLOAD_URL##*/}
+  (cd /tmp/ && curl -LO ${LATEST_DOWNLOAD_URL})
 
-sudo yum localinstall -y /tmp/$RPM && rm /tmp/$RPM
+  sudo yum localinstall -y /tmp/$RPM && rm /tmp/$RPM
+
+else
+  # https://github.com/muesli/duf
+  echo "Setup duf 0.8.1"
+  if [ ! -f $CUSTOM_DIR/duf.rpm ]; then
+      DOWNLOAD_URL="https://github.com/muesli/duf/releases/download/v0.8.1/duf_0.8.1_linux_amd64.rpm"
+      wget $DOWNLOAD_URL -O $CUSTOM_DIR/duf.rpm
+  fi
+
+  sudo yum localinstall -y $CUSTOM_DIR/duf.rpm
+fi

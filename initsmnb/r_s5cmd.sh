@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+CUSTOM_DIR=/home/ec2-user/SageMaker/custom
+
 # Constants
 APP=s5cmd
 GH=peak/s5cmd
@@ -25,29 +27,35 @@ latest_download_url() {
 
 
 LATEST_DOWNLOAD_URL=$(latest_download_url)
-TARBALL=${LATEST_DOWNLOAD_URL##*/}
-curl -LO ${LATEST_DOWNLOAD_URL}
+# check LATEST_DOWNLOAD_URL empty (Github API rate limit exceeded)
+if [[ ! -z $LATEST_DOWNLOAD_URL ]]; then
+  echo "Setup s5cmd latest"
+  TARBALL=${LATEST_DOWNLOAD_URL##*/}
+  curl -LO ${LATEST_DOWNLOAD_URL}
 
-# Go tarball has no root, so we need to create one
-DIR=${TARBALL%.tar.gz}
-mkdir -p $DIR && cd $DIR && tar -xzf ../$TARBALL && cd .. && rm $TARBALL
+  # Go tarball has no root, so we need to create one
+  DIR=${TARBALL%.tar.gz}
+  mkdir -p $DIR && cd $DIR && tar -xzf ../$TARBALL && cd .. && rm $TARBALL
 
-[[ -L ${APP}-latest ]] && rm ${APP}-latest
-ln -s $DIR ${APP}-latest
-ln -s ${APP}-latest/${APP} .
+  [[ -L ${APP}-latest ]] && rm ${APP}-latest
+  ln -s $DIR ${APP}-latest
+  ln -s ${APP}-latest/${APP} .
 
-#https://github.com/peak/s5cmd
-# if [ ! -f $WORKING_DIR/bin/s5cmd ]; then
-#     echo "Setup s5cmd"
-#     export S5CMD_URL=$(curl -s https://api.github.com/repos/peak/s5cmd/releases/latest \
-#     | grep "browser_download_url.*_Linux-64bit.tar.gz" \
-#     | cut -d : -f 2,3 \
-#     | tr -d \")
-#     # echo $S5CMD_URL
-#     wget $S5CMD_URL -O /tmp/s5cmd.tar.gz
-#     sudo mkdir -p /opt/s5cmd/
-#     sudo tar xzvf /tmp/s5cmd.tar.gz -C $WORKING_DIR/bin
-# fi
+else 
+  # https://github.com/peak/s5cmd
+  if [ ! -f $CUSTOM_DIR/bin/s5cmd ]; then
+      echo "Setup s5cmd v2.2.2"
+      # export S5CMD_URL=$(curl -s https://api.github.com/repos/peak/s5cmd/releases/latest \
+      # | grep "browser_download_url.*_Linux-64bit.tar.gz" \
+      # | cut -d : -f 2,3 \
+      # | tr -d \")
+      S5CMD_URL="https://github.com/peak/s5cmd/releases/download/v2.2.2/s5cmd_2.2.2_Linux-64bit.tar.gz"
+      wget $S5CMD_URL -O /tmp/s5cmd.tar.gz
+      sudo mkdir -p /opt/s5cmd/
+      sudo tar xzvf /tmp/s5cmd.tar.gz -C $CUSTOM_DIR/bin
+  fi
+
+fi
 
 # mv/sync 等注意要加单引号，注意区域配置
 # s5cmd mv 's3://xxx-iad/HFDatasets/*' 's3://xxx-iad/datasets/HF/'

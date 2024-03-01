@@ -53,7 +53,9 @@ aws configure set default.cli_auto_prompt on-partial
 # fi
 # sudo $CUSTOM_DIR/bin/aws/install --update
 # rm -f /home/ec2-user/anaconda3/envs/JupyterSystemEnv/bin/aws
-# sudo mv ~/anaconda3/bin/aws ~/anaconda3/bin/aws1
+sudo mv ~/anaconda3/bin/aws ~/anaconda3/bin/aws1
+sudo rm -fr /usr/local/bin/aws
+sudo ln -s ~/SageMaker/.initsmnb.d/bin/aws /usr/local/bin/aws || true
 # ls -l /usr/local/bin/aws
 
 AWS_COMPLETER=$(which aws_completer)
