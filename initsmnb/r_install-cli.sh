@@ -58,7 +58,17 @@ rm -fr /tmp/aws/
 # rm -f /home/ec2-user/anaconda3/envs/JupyterSystemEnv/bin/aws
 # sudo mv ~/anaconda3/bin/aws ~/anaconda3/bin/aws1
 # ls -l /usr/local/bin/aws
+
+AWS_COMPLETER=$(which aws_completer)
+echo $SHELL
+
+cat >> ~/.bashrc <<EOF
+complete -C '${AWS_COMPLETER}' aws
+complete -C '${AWS_COMPLETER}' a
+EOF
+
 source ~/.bashrc
+
 aws configure set default.region ${AWS_REGION}
 aws configure get default.region
 aws configure set region $AWS_REGION
@@ -73,8 +83,28 @@ aws configure set default.cli_auto_prompt on-partial
 
 
 echo "==============================================="
-echo "  More tools ......"
+echo " AI/ML tools ......"
 echo "==============================================="
+# Ask bedrock
+pip install ask-bedrock
+
+if [ -f $CUSTOM_DIR/profile_bedrock_config ]; then
+  # cat $CUSTOM_DIR/profile_bedrock_config >> ~/.aws/config
+  # cat $CUSTOM_DIR/profile_bedrock_credentials >> ~/.aws/credentials
+  cp $CUSTOM_DIR/profile_bedrock_config ~/.aws/config
+  cp $CUSTOM_DIR/profile_bedrock_credentials ~/.aws/credentials  
+fi
+
+if [ -f $CUSTOM_DIR/abc_config ]; then
+  mkdir -p /home/ec2-user/.config/ask-bedrock
+  cp $CUSTOM_DIR/abc_config $HOME/.config/ask-bedrock/config.yaml
+fi
+
+
+echo "==============================================="
+echo "  More Common tools ......"
+echo "==============================================="
+
 #https://github.com/lutzroeder/netron
 pip install netron
 # pip install cleanipynb # cleanipynb xxx.ipynb # 注意会把所有的图片附件都清掉
