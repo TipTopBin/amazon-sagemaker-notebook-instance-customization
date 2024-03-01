@@ -172,5 +172,5 @@ ${BIN_DIR}/r_final-check.sh
 echo "Elapsed: $(($SECONDS / 60))min $(($SECONDS % 60))sec
 "
 
-ehco "Restart JupyterLab"
+echo "Restart JupyterLab"
 sudo systemctl restart jupyter-server

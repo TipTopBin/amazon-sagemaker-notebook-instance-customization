@@ -64,6 +64,8 @@ complete -C '${AWS_COMPLETER}' aws
 complete -C '${AWS_COMPLETER}' a
 EOF
 
+export AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]')
+
 aws configure set default.region ${AWS_REGION}
 aws configure get default.region
 aws configure set region $AWS_REGION
