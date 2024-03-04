@@ -45,6 +45,13 @@ aws configure set default.s3.multipart_threshold 64MB
 aws configure set default.s3.multipart_chunksize 16MB
 aws configure set default.cli_auto_prompt on-partial
 
+export AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]')
+
+aws configure set default.region ${AWS_REGION}
+aws configure get default.region
+aws configure set region $AWS_REGION
+aws --version
+
 # # Upgrade awscli to v2
 # if [ ! -f $WORKCUSTOM_DIRING_DIR/bin/awscliv2.zip ]; then
 #   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "$CUSTOM_DIR/bin/awscliv2.zip"
@@ -60,15 +67,7 @@ sudo ln -s ~/SageMaker/.initsmnb.d/bin/aws /usr/local/bin/aws || true
 
 AWS_COMPLETER=$(which aws_completer)
 echo $SHELL
-
 cat >> ~/.bashrc <<EOF
 complete -C '${AWS_COMPLETER}' aws
 complete -C '${AWS_COMPLETER}' a
 EOF
-
-export AWS_REGION=$(aws ec2 describe-availability-zones --output text --query 'AvailabilityZones[0].[RegionName]')
-
-aws configure set default.region ${AWS_REGION}
-aws configure get default.region
-aws configure set region $AWS_REGION
-aws --version
