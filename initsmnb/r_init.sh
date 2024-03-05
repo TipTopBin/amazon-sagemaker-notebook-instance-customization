@@ -113,7 +113,7 @@ run_and_track_stat ${BIN_DIR}/r_upgrade-jupyter.sh     &> ${BIN_DIR}/../INITSMNB
 # run_and_track_stat ${BIN_DIR}/install-code-server.sh &> ~/INITSMNB-install-code-server.txt &
 
 # ${BIN_DIR}/adjust-sm-git.sh 'First Last' ab@email.abc
-${BIN_DIR}/r_fix-osx-keymap.sh
+# ${BIN_DIR}/r_fix-osx-keymap.sh # 快捷键有冲突
 ${BIN_DIR}/r_patch-bash-config.sh
 ${BIN_DIR}/r_fix-ipython.sh
 ${BIN_DIR}/r_init-vim.sh
