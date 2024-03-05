@@ -86,8 +86,8 @@ echo "##########################################################################
 
 (
     run_and_track_stat ${BIN_DIR}/r_install-cli.sh
-    run_and_track_stat ${BIN_DIR}/r_duf.sh
-    run_and_track_stat ${BIN_DIR}/r_s5cmd.sh
+    # run_and_track_stat ${BIN_DIR}/r_duf.sh
+    # run_and_track_stat ${BIN_DIR}/r_s5cmd.sh
 ) &> ${BIN_DIR}/../INITSMNB-install-cli.txt &
 
 # These require jupyter lab restarted and browser reloaded, to see the changes.
